@@ -20,7 +20,6 @@ public class InterleaverDriver{
     public static void main(String[] args){
         try{
             Interleaver interleaver = new Interleaver();
-                                                      
             System.out.println( interleaver.isInterleaved("abc","dcab","abdccab") );
             System.out.println( interleaver.isInterleaved("abc","dcab","acdcbab") );
 
