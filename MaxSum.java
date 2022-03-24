@@ -23,19 +23,20 @@ public class MaxSum{
      */
     public static int maxSumSubarray(int[] a){
 
-        int maxSoFar = a[0];
+        if(a.length <= 0){
+            return 0;   // for case when input size is 0
+        }
         int[] maxAtIndex = new int[a.length];
-        maxAtIndex[0] = maxSoFar;
-        int solution = maxSoFar;
-        for(int i = 0; i < a.length; i++){
-            if((maxSoFar + a[i]) > a[i]){
-                maxSoFar += a[i];
+        maxAtIndex[0] = a[0];
+        int solution = maxAtIndex[0];
+        for(int i = 1; i < a.length; i++){
+            if((maxAtIndex[i-1] + a[i]) > a[i]){
+                maxAtIndex[i] = maxAtIndex[i-1] + a[i];
             } else{
-                maxSoFar = a[i];
+                maxAtIndex[i] = a[i];
             }
-            maxAtIndex[i] = maxSoFar;
-            if(maxSoFar > solution){
-                solution = maxSoFar;
+            if(maxAtIndex[i] > solution){
+                solution = maxAtIndex[i];
             }
         }
         return solution;
