@@ -10,7 +10,7 @@
  */
 
 public class Interleaver {
-
+    private boolean[][] table;
 
     public Interleaver() {
         //YOUR CODE HERE
@@ -19,6 +19,10 @@ public class Interleaver {
     }//constructor
 
     /**
+     * This function at worst makes two recurisve calls in each level. Worst case those will go to the n-1 or m-1.
+     * This means that the function will be at worst O(n+m). The difference between m and n is a constant value.
+     * Therefore this function will essentially run in O(2n) which is O(n).
+     *
      * Finds if the two strings x and y are an interleaving of string z
      * <p>
      * The string Z is an interleaving of X and Y if it can be obtained
