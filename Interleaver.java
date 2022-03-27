@@ -10,11 +10,12 @@
  */
 
 public class Interleaver {
-    private boolean[][] table;
+
+    private Boolean[][] table;
 
     public Interleaver() {
         //YOUR CODE HERE
-
+        table = null;
 
     }//constructor
 
@@ -35,56 +36,62 @@ public class Interleaver {
      * @return True, if the string z is an interleaving of x and y. False otherwise.
      */
     public Boolean isInterleaved(String x, String y, String z) {
-        int i;
-        int j;
+        int i = x.length();
+        int j = y.length();
+        int ij = z.length();
 
+        table = new Boolean[i + 1][j + 1];
+        return interleavedRecursion(x, y, z, i, j, ij);
+    }
+    private Boolean interleavedRecursion(String x, String y, String z, int i, int j, int ij){
         //if any of the strings are null then return false
-        if (z == null || x == null || y == null) {
-            return true;
+        if (table[i][j]!=null) {
+            return table[i][j];
         }
-
-        i = x.length();
-        j = y.length();
         //if the length of x plus the length of y is not equal to the length of z we know it can't be interleaved
-        if (i + j != z.length()) {
-            return false;
+        if (i + j != ij) {
+            table[i][j] = false;
+            return table[i][j];
+        }
+        if (z.isEmpty()) {
+            return table[i][j] = true;
         }
 
-        //if either x or y have no more characters then z must be equal to the one that still has some characters
+        //if either x or y have no more characters than z must be equal to the one that still has some characters or else it is false
         if (x.isEmpty()) {
-            if (y.equals(z)) {
-                return true;
+            if (z.charAt(i + j - 1) == y.charAt(j - 1)) {
+                return table[i][j] = interleavedRecursion(x, y.substring(0, j - 1), z.substring(0, i + j - 1),i, j-1, ij-1);
             } else {
-                return false;
+                return table[i][j] = false;
             }
         }
         if (y.isEmpty()) {
-            if (x.equals(z)) {
-                return true;
+            if (z.charAt(i + j - 1) == x.charAt(i - 1)) {
+                return table[i][j] = interleavedRecursion(x.substring(0, i - 1), y, z.substring(0, i + j - 1), i-1, j, ij-1);
             } else {
-                return false;
+                return table[i][j] = false;
             }
         }
 
         //Recursive calls:
-
         //if the last character in z is equal to the last character in both then recurse on both.
         if (z.charAt(i + j-1) == x.charAt(i-1) && z.charAt(i + j-1) == y.charAt(j-1)) {
             //if either path shows that they are interleaved then return true.
-            if (isInterleaved(x.substring(0, i - 1), y, z.substring(0, i + j - 1)) || isInterleaved(x, y.substring(0, j - 1), z.substring(0, i + j - 1))) {
-                return true;
+            if (interleavedRecursion(x.substring(0, i - 1), y, z.substring(0, i + j - 1),i-1,j,ij-1) || interleavedRecursion(x, y.substring(0, j - 1), z.substring(0, i + j - 1),i,j-1,ij-1)) {
+                table[i][j] = true;
+                return table[i][j];
             } else {
-                return false;
+                table[i][j] = false;
+                return table[i][j];
             }
             //if the last character in z is equal to only one of them then recurse on only the one
         } else if (z.charAt(i + j - 1) == x.charAt(i - 1)) {
-            return isInterleaved(x.substring(0, i - 1), y, z.substring(0, i + j - 1));
+            return table[i][j] = interleavedRecursion(x.substring(0, i - 1), y, z.substring(0, i + j - 1), i-1, j, ij-1);
         } else if (z.charAt(i + j - 1) == y.charAt(j - 1)) {
-            return isInterleaved(x, y.substring(0, j - 1), z.substring(0, i + j - 1));
+            return table[i][j] = interleavedRecursion(x, y.substring(0, j - 1), z.substring(0, i + j - 1),i, j-1, ij-1);
         }
         //if none of them are equal then this is not interleaved
         return false;
-
     }//isInterleaved
 
     /**
