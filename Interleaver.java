@@ -22,7 +22,7 @@ public class Interleaver {
     /**
      * This function at worst makes two recurisve calls in each level. Worst case those will go to the n-1 or m-1.
      * This means that the function will be at worst O(n+m). The difference between m and n is a constant value.
-     * Therefore this function will essentially run in O(2n) which is O(n).
+     * Therefore this function will essentially run in O(2^(n+m)) which is O(2^n).
      *
      * Finds if the two strings x and y are an interleaving of string z
      * <p>
